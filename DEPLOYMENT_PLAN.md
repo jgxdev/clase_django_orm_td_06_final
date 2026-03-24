@@ -36,39 +36,46 @@ Ejecuta esto localmente y copia la salida como `DJANGO_SECRET_KEY` en Vercel.
 
 ```
 proyecto/
-├── requirements.txt          # Dependencias Python
+├── requirements.txt          # Dependencias Python (legacy)
+├── pyproject.toml            # Configuración de proyecto (nuevo formato)
 ├── vercel.json              # Configuración de Vercel
+├── wsgi.py                  # Entrypoint WSGI para Vercel (root level)
 ├── build.sh                 # Script de construcción
+├── .gitignore               # Archivos ignorados en git
+├── README.md                # Documentación principal
 ├── .env.example             # Plantilla de variables de entorno
+├── DEPLOYMENT_PLAN.md       # Este archivo
 ├── config/
 │   └── settings.py          # Actualizado para variables de entorno
 ├── manage.py
 └── ...
 ```
 
+### Cambios Importantes
+
+1. **`wsgi.py` en la raíz**: Vercel lo detecta automáticamente aquí
+2. **`pyproject.toml`**: Compatible con `uv` (gestor de paquetes de Vercel)
+3. **Variables de entorno**: Dinámicamente cargadas desde Vercel
+
 ## 🚀 Pasos de Despliegue
 
 ### 1. Preparar el Repositorio Local
 
 ```bash
-# Agregar .gitignore si no existe
-echo "db.sqlite3
-.env
-*.pyc
-__pycache__/
-*.sqlite3
-.venv/
-/staticfiles/
-/media/
-node_modules/
-.vercel/
-" >> .gitignore
+# Agregar todos los cambios
+git add requirements.txt pyproject.toml vercel.json wsgi.py build.sh \
+        .env.example .gitignore README.md DEPLOYMENT_PLAN.md config/settings.py
 
-# Hacer commit de los cambios
-git add requirements.txt vercel.json build.sh .env.example config/settings.py
+# Hacer commit
 git commit -m "Configuración para despliegue en Vercel"
 git push origin main
 ```
+
+### ✋ Nota Importante
+Si obtienes el error: `No django entrypoint found`:
+- Vercel ya incluye `wsgi.py` en la raíz ✅
+- `pyproject.toml` y `requirements.txt` están presentes ✅
+- Si el error persiste: usa `vercel redeploy` o limpia el build cache en Vercel Dashboard
 
 ### 2. Conectar Vercel con GitHub
 
