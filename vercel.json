@@ -1,8 +1,8 @@
 {
+  "buildCommand": "bash build.sh",
   "functions": {
     "wsgi.py": {
-      "runtime": "python3.12",
-      "buildCommand": "bash build.sh"
+      "runtime": "python3.12"
     }
   },
   "rewrites": [
