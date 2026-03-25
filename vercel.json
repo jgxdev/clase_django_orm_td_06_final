@@ -1,19 +1,14 @@
 {
-  "builds": [
-    {
-      "src": "wsgi.py",
-      "use": "@vercel/python",
-      "config": {
-        "maxLambdaSize": "15mb",
-        "runtime": "python3.12",
-        "buildCommand": "bash build.sh"
-      }
+  "functions": {
+    "wsgi.py": {
+      "runtime": "python3.12",
+      "buildCommand": "bash build.sh"
     }
-  ],
-  "routes": [
+  },
+  "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "wsgi.py"
+      "source": "/(.*)",
+      "destination": "/wsgi.py"
     }
   ]
 }
